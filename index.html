@@ -34,7 +34,7 @@
         </p>
         <div class="hero-cta">
           <a class="btn primary" href="#project">프로젝트 보기</a>
-          <a class="btn" href="mailto:sybfsh1@naver.com">이메일 보내기</a>
+          <a class="btn copy-email" href="mailto:sybfsh1@naver.com">이메일 보내기</a>
         </div>
       </div>
       <figure class="hero-photo">
@@ -186,10 +186,48 @@
     <section id="contact" class="wrap section contact">
       <h2>Contact</h2>
       <p>함께 일할 기회를 기다리고 있습니다. 편하게 연락 주세요.</p>
-      <a class="btn primary" href="mailto:sybfsh1@naver.com">sybfsh1@naver.com</a>
+      <a class="btn primary copy-email" href="mailto:sybfsh1@naver.com">sybfsh1@naver.com</a>
     </section>
   </main>
 
   <footer class="wrap footer">© 2026 Kwon Jun Hyeok</footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      return ok ? Promise.resolve() : Promise.reject();
+    }
+
+    document.querySelectorAll('.copy-email').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const email = link.getAttribute('href').replace('mailto:', '');
+        copyText(email)
+          .then(() => showToast('이메일이 복사되었습니다 · ' + email))
+          .catch(() => showToast('복사에 실패했습니다 · ' + email));
+      });
+    });
+  </script>
 </body>
 </html>
