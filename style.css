@@ -153,3 +153,5 @@ a { color: inherit; text-decoration: none; }
   transition: opacity .25s, transform .25s;
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.link-out { margin-top: 18px; }
